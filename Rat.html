@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Send 👃</title>
+    <title>Send 🐀"</title>
     <script>
-        // Function to send the 🐸 emoji
+        // Function to send the 🐀" emoji
         function sendFrog() {
             const url = "https://chat.googleapis.com/v1/spaces/AAAAG7c4hL8/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=AA_gdzavdberXW3aBATYvoWOXxsTcYj0Gzf0qr6aYZ0";
             const data = {
@@ -21,15 +21,15 @@
             })
             .then(response => {
                 if (!response.ok) {
-                    console.error("Failed to send 🐸:", response.statusText);
+                    console.error("Failed to send 🐀":", response.statusText);
                 }
             })
             .catch(error => {
-                console.error("Error sending 🐸:", error);
+                console.error("Error sending 🐀":", error);
             });
         }
 
-        // Send 🐸 every 1 second
+        // Send 🐀" every 1 second
         window.onload = () => {
             setInterval(sendFrog, 1000);
         };
