@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Rick Astley - Never Gonna Give You Up (Official Music Video)</title>
+
+  <!-- Open Graph tags (these create the iMessage/preview) -->
+  <meta property="og:title" content="Rick Astley - Never Gonna Give You Up (Official Music Video)">
+  <meta property="og:description" content="Music video by Rick Astley — never gonna give you up.">
+  <meta property="og:image" content="https://i.imgur.com/6R3q1.jpg"> <!-- example thumbnail URL; replace if you like -->
+  <meta property="og:url" content="https://your-page.example.com/">
+
+  <!-- Twitter card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Rick Astley - Never Gonna Give You Up (Official Music Video)">
+  <meta name="twitter:description" content="Music video by Rick Astley — never gonna give you up.">
+  <meta name="twitter:image" content="https://i.imgur.com/6R3q1.jpg">
+
+  <!-- Immediate redirect to the real page after a short pause -->
+  <meta http-equiv="refresh" content="0; url=https://example.com">
+</head>
+<body>
+  <!-- Visible fallback if redirect fails -->
+  <p>If you are not redirected, <a href="https://example.com">click here</a>.</p>
+</body>
+</html>
