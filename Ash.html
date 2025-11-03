@@ -1,26 +1,120 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Rick Astley - Never Gonna Give You Up (Official Music Video)</title>
 
-  <!-- Open Graph tags (these create the iMessage/preview) -->
-  <meta property="og:title" content="Rick Astley - Never Gonna Give You Up (Official Music Video)">
-  <meta property="og:description" content="Music video by Rick Astley — never gonna give you up.">
-  <meta property="og:image" content="https://i.imgur.com/6R3q1.jpg"> <!-- example thumbnail URL; replace if you like -->
-  <meta property="og:url" content="https://your-page.example.com/">
+  <!-- Open Graph for iMessage preview -->
+  <meta property="og:type" content="video.other" />
+  <meta property="og:title" content="Rick Astley - Never Gonna Give You Up (Official Music Video)" />
+  <meta property="og:description" content="Music video by Rick Astley — never gonna give you up." />
+  <meta property="og:image" content="https://i.imgur.com/6R3q1.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content="https://your-username.github.io/repo-name/" />
 
-  <!-- Twitter card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Rick Astley - Never Gonna Give You Up (Official Music Video)">
-  <meta name="twitter:description" content="Music video by Rick Astley — never gonna give you up.">
-  <meta name="twitter:image" content="https://i.imgur.com/6R3q1.jpg">
+  <!-- Twitter Card (extra preview compatibility) -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Rick Astley - Never Gonna Give You Up (Official Music Video)" />
+  <meta name="twitter:description" content="Music video by Rick Astley — never gonna give you up." />
+  <meta name="twitter:image" content="https://i.imgur.com/6R3q1.jpg" />
 
-  <!-- Immediate redirect to the real page after a short pause -->
-  <meta http-equiv="refresh" content="0; url=https://example.com">
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: #000;
+      color: #fff;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+    }
+    .video {
+      position: relative;
+      width: 90%;
+      max-width: 640px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 0 30px rgba(0,0,0,0.6);
+    }
+    .video img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: opacity 0.3s;
+    }
+    .overlay:hover { background: rgba(0,0,0,0.25); }
+    .overlay svg {
+      width: 90px;
+      height: 90px;
+      fill: #fff;
+      opacity: 0.85;
+    }
+    #thankyou {
+      display: none;
+      max-width: 600px;
+      animation: fadeIn 1.4s ease forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .btn {
+      background: #007aff;
+      color: #fff;
+      border: none;
+      padding: 12px 18px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+  </style>
 </head>
 <body>
-  <!-- Visible fallback if redirect fails -->
-  <p>If you are not redirected, <a href="https://docs.google.com">click here</a>.</p>
+  <div class="video" id="videoContainer">
+    <img src="https://i.imgur.com/6R3q1.jpg" alt="Rick Astley - Never Gonna Give You Up thumbnail">
+    <div class="overlay" id="overlay">
+      <!-- Play button icon -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+        <polygon points="16,12 56,32 16,52" />
+      </svg>
+    </div>
+  </div>
+
+  <div id="thankyou">
+    <h1>Thank You for Clicking!</h1>
+    <p>You really thought you were about to get rickrolled, didn’t you? That’s okay — the internet thanks you for your bravery, curiosity, and impeccable sense of humor.</p>
+    <p>Consider this your honorary badge of trust and gullibility. The world needs more believers like you. 🫶</p>
+    <button class="btn" onclick="window.location.reload()">Go Again</button>
+  </div>
+
+  <script>
+    const overlay = document.getElementById('overlay');
+    const videoContainer = document.getElementById('videoContainer');
+    const thankyou = document.getElementById('thankyou');
+
+    overlay.addEventListener('click', () => {
+      overlay.style.opacity = '0';
+      setTimeout(() => {
+        videoContainer.style.display = 'none';
+        thankyou.style.display = 'block';
+      }, 1200); // brief fake "video loading" delay
+    });
+  </script>
 </body>
 </html>
